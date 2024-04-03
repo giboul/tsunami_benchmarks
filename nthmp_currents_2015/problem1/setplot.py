@@ -4,8 +4,9 @@ Set up the plot figures, axes, and items to be done for each frame.
 This module is imported by the plotting routines and then the
 function setplot is called to set the plot parameters.
 """ 
+from pylab import *
 from clawpack.visclaw import colormaps, geoplot, gaugetools
-from pylab import nonzero, ravel, where, sqrt, plot, quiver, contour
+from clawpack.visclaw.data import ClawPlotData
 # raise ImportError("Uncomment this error so that `clawpack.visclaw.setplot_default()` is suggested.")
 
 
@@ -13,12 +14,15 @@ def find(condition):
     return nonzero(ravel(condition))
 
 
-def setplot(plotdata):
+def setplot(plotdata=None):
     """ 
     Specify what is to be plotted at each frame.
     Input:  plotdata, an instance of pyclaw.plotters.data.ClawPlotData.
     Output: a modified version of plotdata.    
     """ 
+
+    if plotdata is None:
+        plotdata = ClawPlotData
 
     plotdata.clearfigures()  # clear any old figures,axes,items data
     plotdata.format = 'binary'
@@ -46,11 +50,11 @@ def setplot(plotdata):
     #-----------------------------------------
     # Figure for imshow plot
     #-----------------------------------------
-    plotfigure = plotdata.new_plotfigure(name='surface', figno=0)
+    plotfigure = plotdata.new_plotfigure(name='Surface', figno=0)
     plotfigure.kwargs = {'figsize':(14,10)}
 
     # Set up for axes in this figure:
-    plotaxes = plotfigure.new_plotaxes('surface')
+    plotaxes = plotfigure.new_plotaxes('Surface')
     plotaxes.axescmd = 'subplot(311)'
     #plotaxes.axescmd = 'axes([.1,.7,.8,.2])'
     plotaxes.title = 'Surface'

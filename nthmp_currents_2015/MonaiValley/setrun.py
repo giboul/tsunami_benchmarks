@@ -379,11 +379,10 @@ def setgeo(rundata):
     For documentation see ....
     """
 
-    try:
+    if hasattr(rundata, 'geo_data'):
         geo_data = rundata.geo_data    
-    except:
-        print "*** Error, this rundata has no geo_data attribute"
-        raise AttributeError("Missing geo_data attribute")
+    else:
+        raise AttributeError("*** Error, this rundata has no geo_data attribute")
 
     # == Physics ==
     # == setgeo.data values ==
@@ -434,7 +433,7 @@ def setgeo(rundata):
 
     # == setfixedgrids.data values ==
     #geo_data.fixedgrids = []
-    fixed_grids = rundata.fixed_grid_data         
+    # fixed_grids = rundata.fixed_grid_data         
     # for fixed grids append lines of the form
     # [t1,t2,noutput,x1,x2,y1,y2,xpoints,ypoints,\
     #  ioutarrivaltimes,ioutsurfacemax]
@@ -449,9 +448,8 @@ if __name__ == '__main__':
     # Set up run-time parameters and write all data files.           
     import sys
     if len(sys.argv) == 2:
-	rundata = setrun(sys.argv[1])
+        rundata = setrun(sys.argv[1])
     else:
-	rundata = setrun()
+        rundata = setrun()
 
     rundata.write()
-    
