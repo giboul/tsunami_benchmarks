@@ -399,7 +399,7 @@ def setplot(plotdata):
         xticks([1800*i for i in range(n)],[str(0.5*i) for i in range(n)])
         xlim(25000,t.max())
         #ylim(-0.5,0.5)
-        print "+++ gaugeno = ",current_data.gaugeno
+        print(f"+++ gaugeno = {current_data.gaugeno}")
 
     #plotaxes.ylimits = [-0.5, 0.5]
     plotaxes.afteraxes = add_zeroline

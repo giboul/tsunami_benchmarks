@@ -422,11 +422,10 @@ def setgeo(rundata):
     Set GeoClaw specific runtime parameters.
     """
 
-    try:
+    if hasattr(geo_data, 'geo_data'):
         geo_data = rundata.geo_data
-    except:
-        print "*** Error, this rundata has no geo_data attribute"
-        raise AttributeError("Missing geo_data attribute")
+    else:
+        raise AttributeError("*** Error, this rundata has no geo_data attribute")
 
     # == Physics ==
     geo_data.gravity = 9.81
