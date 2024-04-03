@@ -9,29 +9,32 @@ plotdata = ClawPlotData()
 
 toffset = 0.
 
-if 1:
+if True:
     plotdata.outdir = '_output_manning010_cfl090'
     fname = 'BM1_leveque_1.txt'
-if 0:
+elif False:
     plotdata.outdir = '_output_manning010_cfl089'
     fname = 'BM1_leveque_2.txt'
-if 0:
+elif False:
     plotdata.outdir = '_output_manning015_cfl090'
     fname = 'BM1_leveque_3.txt'
-if 0:
+elif False:
     plotdata.outdir = '_output_manning015_cfl089'
     fname = 'BM1_leveque_4.txt'
+
+print(f"{plotdata.outdir = }")
+print(f"{fname = }")
 
 figure(figsize=(8,12))
 clf()
 
 # ---  Gauge 1 ---
 
-d = loadtxt('s1u.txt')
+d = loadtxt('../problem1_take2/S1u.txt')
 t1u = d[:,0]
 s1u = d[:,1]
 
-d = loadtxt('s1v.txt')
+d = loadtxt('../problem1_take2/S1v.txt')
 t1v = d[:,0]
 s1v = d[:,1]
 
