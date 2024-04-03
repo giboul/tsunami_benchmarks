@@ -336,9 +336,10 @@ def setgeo(rundata):
     For documentation see ....
     """
 
-    if not hasattr(rundata, 'geo_data'):
+    if hasattr(rundata, 'geo_data'):
+        geo_data = rundata.geo_data
+    else:
         raise AttributeError("*** Error, this rundata has no geo_data attribute")
-    geo_data = rundata.geo_data
 
        
     # == Physics ==
