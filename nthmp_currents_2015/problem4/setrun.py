@@ -6,8 +6,8 @@ that will be read in by the Fortran code.
 
 """
 
-import os
 import numpy as np
+from clawpack.clawutil.data import ClawRunData
 
 
 #------------------------------
@@ -17,20 +17,14 @@ def setrun(claw_pkg='geoclaw'):
     """
     Define the parameters used for running Clawpack.
 
-    INPUT:
-        claw_pkg expected to be "geoclaw" for this setrun.
-
-    OUTPUT:
+    Return
+    ------
         rundata - object of class ClawRunData
 
     """
 
-    from clawpack.clawutil import data
-
-    assert claw_pkg.lower() == 'geoclaw',  "Expected claw_pkg = 'geoclaw'"
-
     num_dim = 2
-    rundata = data.ClawRunData(claw_pkg, num_dim)
+    rundata = ClawRunData('geoclaw', num_dim)
 
     #------------------------------------------------------------------
     # GeoClaw specific parameters:
@@ -390,11 +384,10 @@ def setgeo(rundata):
     For documentation see ....
     """
 
-    try:
+    if hasattr(rundata, 'geo_data'):
         geo_data = rundata.geo_data
-    except:
-        print "*** Error, this rundata has no geo_data attribute"
-        raise AttributeError("Missing geo_data attribute")
+    else:
+        raise AttributeError("*** Error, this rundata has no geo_data attribute")
 
        
     # == Physics ==

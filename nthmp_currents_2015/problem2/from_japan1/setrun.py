@@ -21,7 +21,7 @@ import numpy as np
 HOME = os.environ['HOME']
 topodir = HOME + '/git/tohoku2011/topo/'
 if not os.path.isdir(topodir):
-    raise Exception("*** Missing topo directory: %s" % topodir)
+    raise OSError(f"*** Missing topo directory: {topodir}")
 
 dtopodir = HOME + '/git/tohoku2011-paper1/sources/'
 if not os.path.isdir(dtopodir):

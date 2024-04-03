@@ -16,11 +16,6 @@ def setrun(claw_pkg='geoclaw') -> ClawRunData:
     """
     Define the parameters used for running Clawpack.
 
-    Parameters
-    ----------
-        claw_pkg : str
-            expected to be "geoclaw" for this setrun.
-
     Return
     ------
         ClawRunData

@@ -7,7 +7,14 @@ function setplot is called to set the plot parameters.
     
 """ 
 
-import numpy
+from pylab import *
+from clawpack.visclaw import gaugetools
+from clawpack.visclaw import colormaps, geoplot
+
+
+def find(condition):
+    return nonzero(ravel(condition))
+
 
 datadir = '/Users/rjl/currents_workshop/4_Seaside_OSU_Model_Lab/comparison_data'
 try:
@@ -20,8 +27,8 @@ try:
     b9 = loadtxt(datadir+'/B9.txt',skiprows=1)
     g209 = reshape(b9,(9000,4))
     data_found = True
-except:
-    print "warning: error loading comparison data"
+except FileNotFoundError:
+    print("WARNING: error while loading comparison data")
     data_found = False
 
 
@@ -36,9 +43,6 @@ def setplot(plotdata):
     Output: a modified version of plotdata.
     
     """ 
-
-
-    from clawpack.visclaw import colormaps, geoplot
 
     plotdata.clearfigures()  # clear any old figures,axes,items data
     plotdata.format = 'binary'
@@ -57,7 +61,6 @@ def setplot(plotdata):
     # an afteraxis function:
 
     def addgauges(current_data):
-        from clawpack.visclaw import gaugetools
         gaugetools.plot_gauge_locations(current_data.plotdata, \
              gaugenos='all', format_string='ko', add_labels=True, fontsize=8)
     
@@ -101,7 +104,6 @@ def setplot(plotdata):
     # Add contour lines of bathymetry:
     plotitem = plotaxes.new_plotitem(plot_type='2d_contour')
     plotitem.plot_var = geoplot.topo
-    from numpy import arange, linspace
     plotitem.contour_levels = [0.08]
     plotitem.amr_contour_colors = ['k']  # color on each level
     plotitem.kwargs = {'linestyles':'solid'}
@@ -147,7 +149,6 @@ def setplot(plotdata):
     # Add contour lines of bathymetry:
     plotitem = plotaxes.new_plotitem(plot_type='2d_contour')
     plotitem.plot_var = geoplot.topo
-    from numpy import arange, linspace
     plotitem.contour_levels = [0.08]
     plotitem.amr_contour_colors = ['k']  # color on each level
     plotitem.kwargs = {'linestyles':'solid'}
@@ -172,7 +173,6 @@ def setplot(plotdata):
 
     def xsec(current_data):
         # Return x value and surface eta at this point, along y=0
-        from pylab import find,ravel
         x = current_data.x
         y = current_data.y
         dy = current_data.dy
@@ -193,7 +193,6 @@ def setplot(plotdata):
 
     def xsec_s(current_data):
         # Return x value and speed at this point, along y=0
-        from pylab import find,ravel,where,sqrt
         x = current_data.x
         y = current_data.y
         dy = current_data.dy
@@ -219,7 +218,6 @@ def setplot(plotdata):
 
     def xsec_B(current_data):
         # Return x value and B at this point, along y=0
-        from pylab import find,ravel,where,sqrt
         x = current_data.x
         y = current_data.y
         dy = current_data.dy
@@ -261,7 +259,6 @@ def setplot(plotdata):
     # Plot speed as red curve:
     plotitem = plotaxes.new_plotitem(plot_type='1d_plot')
     def speed(current_data):
-        from pylab import where,sqrt
         q = current_data.q
         h = q[0,:]
         dry_tol = 0.001
@@ -291,7 +288,6 @@ def setplot(plotdata):
 
 
     def add_zeroline(current_data):
-        from pylab import plot, legend
         t = current_data.t
         legend(('surface','speed/10'),loc='lower left')
         plot(t, 0*t, 'k')

@@ -189,38 +189,30 @@ for bnum,ba in zip([1,4,6,9], [b1a,b4a,b6a,b9a]):
     #a.text(17,ymid,'B%s' % bnum, fontsize=15)
 
 
-if 0:
-    figure(50); fname = 'wg1-4.png'; savefig(fname); print "Saved ",fname
-    figure(201); fname = 'B1.png'; savefig(fname); print "Saved ",fname
-    figure(204); fname = 'B4.png'; savefig(fname); print "Saved ",fname
-    figure(206); fname = 'B6.png'; savefig(fname); print "Saved ",fname
-    figure(209); fname = 'B9.png'; savefig(fname); print "Saved ",fname
-    figure(501); fname = 'B_depth.png'; savefig(fname); print "Saved ",fname
-    figure(502); fname = 'B_velocity.png'; savefig(fname); print "Saved ",fname
-    figure(503); fname = 'B_mflux.png'; savefig(fname); print "Saved ",fname
+if False:
+    figure(50); fname = 'wg1-4.png'; savefig(fname); print(f"Saved {fname}")
+    figure(201); fname = 'B1.png'; savefig(fname); print(f"Saved {fname}")
+    figure(204); fname = 'B4.png'; savefig(fname); print(f"Saved {fname}")
+    figure(206); fname = 'B6.png'; savefig(fname); print(f"Saved {fname}")
+    figure(209); fname = 'B9.png'; savefig(fname); print(f"Saved {fname}")
+    figure(501); fname = 'B_depth.png'; savefig(fname); print(f"Saved {fname}")
+    figure(502); fname = 'B_velocity.png'; savefig(fname); print(f"Saved {fname}")
+    figure(503); fname = 'B_mflux.png'; savefig(fname); print(f"Saved {fname}")
 
 # Figure for paper:
-figure(600); fname = 'B_gauges.png'; savefig(fname); print "Saved ",fname
+figure(600); fname = 'B_gauges.png'; savefig(fname); print(f"Saved {fname}")
 
 
 
 def compare(gaugeno):
     row_num = int(floor(gaugeno/100.))
-    #print "row_num = ",row_num
-    if row_num == 0:
-        return
-    elif row_num == 1:
-        row = 'A'
-    elif row_num == 2:
-        row = 'B'
-    elif row_num == 3:
-        row = 'C'
-    elif row_num == 4:
-        row = 'D'
+    #print("row_num = ",row_num)
+    rows = (None, 'A', 'B', 'C', 'D')
+    row = rows[row_num]
     num = str(gaugeno)[2]
-    print "Gauge %s%s" % (row,num)
-    gauge = "%s%s" % (row,num)
-    try:
+    print(f"Gauge {row}{num}")
+    gauge = f"{row}{num}"
+    try:  # TODO clean
         gdata = loadtxt(datadir_other + '/Location_%s.txt' % gauge,skiprows=3)
     except:
         gdata = loadtxt(datadir + '/Location_%s.txt' % gauge,skiprows=3)
@@ -255,9 +247,9 @@ def compare(gaugeno):
     legend(loc='upper left')
 
     if 0:
-        fname = '%s.png' % gauge
+        fname = f'{gauge}.png'
         savefig(fname)
-        print "Created ",fname
+        print(f"Created {fname}")
 
 gaugenos = range(101,110) + range(201,210) + range(301,310) + range(401,405)
 
