@@ -1,4 +1,6 @@
 *.data
+*.DAT
+*.dat
 *.amr
 *fort.*
 .output
@@ -10,8 +12,16 @@
 xgeoclaw
 README.rst
 *.png
+*.jpg
 *.tex
 *.tt1
 *.txt
 __pycache__
 *.csv
+*.m
+*.mat
+*.pdf
+*.doc*
+*.kmz
+*.bak
+*.bin
