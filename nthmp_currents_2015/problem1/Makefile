@@ -33,10 +33,16 @@ AMRLIB = $(CLAW)/amrclaw/src/2d
 GEOLIB = $(CLAW)/geoclaw/src/2d/shallow
 include $(GEOLIB)/Makefile.geoclaw
 
+EXCLUDE_SOURCES = \
+  valout.f \
+
 SOURCES = \
   $(CLAW)/riemann/src/rpn2_geoclaw.f \
   $(CLAW)/riemann/src/rpt2_geoclaw.f \
   $(CLAW)/riemann/src/geoclaw_riemann_utils.f \
+  bc2amr.f \
+  qinit.f90 \
+  valout_vorticity.f \
 
 #-------------------------------------------------------------------
 # Include Makefile containing standard definitions and make options:
