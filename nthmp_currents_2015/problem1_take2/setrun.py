@@ -9,17 +9,13 @@ import numpy as np
 from clawpack.clawutil.data import ClawRunData
 
 
-#------------------------------
 def setrun(claw_pkg='geoclaw') -> ClawRunData:
-#------------------------------
-
     """
     Define the parameters used for running Clawpack.
 
     Return
     ------
         ClawRunData
-
     """
 
     num_dim = 2
@@ -119,7 +115,7 @@ def setrun(claw_pkg='geoclaw') -> ClawRunData:
         clawdata.output_step_interval = 20
         clawdata.total_steps = 40
         clawdata.output_t0 = True
-        
+
 
     clawdata.output_format = 'binary'      # 'ascii' or 'binary' 
 
@@ -227,16 +223,9 @@ def setrun(claw_pkg='geoclaw') -> ClawRunData:
     # used to restart a computation.
 
     clawdata.checkpt_style = 1
-
-    if clawdata.checkpt_style == 0:
-        # Do not checkpoint at all
-        pass
-
-    elif clawdata.checkpt_style == 1:
-        # Checkpoint only at tfinal.
-        pass
-
-    elif clawdata.checkpt_style == 2:
+    # 1: Do not checkpoint at all
+    # 2: Checkpoint only at tfinal.
+    if clawdata.checkpt_style == 2:
         # Specify a list of checkpoint times.  
         clawdata.checkpt_times = [0.1,0.15]
 
@@ -336,7 +325,7 @@ def setgeo(rundata):
     else:
         raise AttributeError("*** Error, this rundata has no geo_data attribute")
 
-       
+
     # == Physics ==
     geo_data.gravity = 9.81
     geo_data.coordinate_system = 1

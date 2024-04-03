@@ -5,7 +5,6 @@ The values set in the function setrun are then written out to data files
 that will be read in by the Fortran code.
 
 """
-
 import numpy as np
 from clawpack.clawutil.data import ClawRunData
 
@@ -13,11 +12,6 @@ from clawpack.clawutil.data import ClawRunData
 def setrun(claw_pkg='geoclaw') -> ClawRunData:
     """
     Define the parameters used for running Clawpack.
-
-    Parameters
-    ----------
-        claw_pkg: str
-            Expected to be "geoclaw" for this setrun.
 
     Return
     ------
@@ -27,11 +21,15 @@ def setrun(claw_pkg='geoclaw') -> ClawRunData:
     num_dim = 2
     rundata = ClawRunData('geoclaw', num_dim)
 
+    #------------------------------------------------------------------
     # GeoClaw specific parameters:
+    #------------------------------------------------------------------
     rundata = setgeo(rundata)
 
+    #------------------------------------------------------------------
     # Standard Clawpack parameters to be written to claw.data:
-    # (or to amr2ez.data for AMR)
+    #   (or to amr2ez.data for AMR)
+    #------------------------------------------------------------------
     clawdata = rundata.clawdata  # initialized when rundata instantiated
 
 
@@ -245,9 +243,9 @@ def setrun(claw_pkg='geoclaw') -> ClawRunData:
     amrdata.amr_levels_max = 2
 
     # List of refinement ratios at each level (length at least mxnest-1)
-    amrdata.refinement_ratios_x = [8]
-    amrdata.refinement_ratios_y = [8]
-    amrdata.refinement_ratios_t = [8]
+    amrdata.refinement_ratios_x = [4]
+    amrdata.refinement_ratios_y = [4]
+    amrdata.refinement_ratios_t = [4]
 
 
     # Specify type of each aux variable in amrdata.auxtype.
@@ -327,6 +325,7 @@ def setgeo(rundata):
     else:
         raise AttributeError("*** Error, this rundata has no geo_data attribute")
 
+
     # == Physics ==
     geo_data.gravity = 9.81
     geo_data.coordinate_system = 1
@@ -356,7 +355,7 @@ def setgeo(rundata):
     topo_data.topofiles.append([1, 1, 1, 0., 1.e10, 'domain.tt1'])
     topo_data.topofiles.append([1, 1, 1, 0., 1.e10, 'hump.tt1'])
 
-    # == setdtopo.data values ==  # TODO check if it does something
+    # == setdtopo.data values ==
     dtopo_data = rundata.dtopo_data
     # for moving topography, append lines of the form :   (<= 1 allowed for now!)
     #   [topotype, minlevel,maxlevel,fname]
