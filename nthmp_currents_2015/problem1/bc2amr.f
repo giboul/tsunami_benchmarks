@@ -81,7 +81,7 @@ c
 c ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::;
 
       use amr_module, only: mthbc
-      use geoclaw_module, only: grav
+      use geoclaw_module, only: grav  ! g => grav ?
 
       implicit double precision (a-h,o-z)
 
