@@ -6,13 +6,11 @@ This module is imported by the plotting routines and then the
 function setplot is called to set the plot parameters.
     
 """ 
+from pathlib import Path
 
-import numpy
-from clawpack.visclaw import colormaps
-import os
 
-outdir1 = os.path.abspath('_output_manning010_gt4_cfl089')
-outdir2 = os.path.abspath('_output_manning010_gt4_cfl090')
+outdir1 = Path('_output').absolute()  # Path('_output_manning010_gt4_cfl089').absolute()
+outdir2 = Path('_output').absolute()  # Path('_output_manning010_gt4_cfl090').absolute()
 
 
 #--------------------------
@@ -235,10 +233,10 @@ def setplot(plotdata):
     plotitem = plotaxes.new_plotitem(plot_type='2d_patch')
     plotitem.amr_patch_bgcolor = ['#ffeeee', '#eeeeff', '#eeffee']
     plotitem.amr_celledges_show = [1,1,0]   
-    plotitem.amr_patchedges_show = [1]     
+    plotitem.amr_patchedges_show = [1]
 
     #-----------------------------------------
-    
+
     # Parameters used only when creating html and/or latex hardcopy
     # e.g., via pyclaw.plotters.frametools.printframes:
 

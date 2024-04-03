@@ -1,38 +1,38 @@
-
-
 from pylab import *
 from clawpack.visclaw.data import ClawPlotData
 
+
 plotdata = ClawPlotData()
 
-if 0:
+if True:
     plotdata.outdir = '_output'
     toffset = 0.
-
-if 0:
+elif True:
     plotdata.outdir = '_output_manning_0.025'
     toffset = 92.
-if 0:
+elif False:
     plotdata.outdir = '_output_manning015_cfl090'
     toffset = 92.
-if 1:
+else:
     plotdata.outdir = '_output_manning015_cfl089'
     toffset = 96.
+print(f"USING OUTPUT FOLDER: {plotdata.outdir}")
 
 figure(50,figsize=(18,12))
 clf()
 
 # ---  Gauge 1 ---
 
-d = loadtxt('s1u.txt')
+d = loadtxt('../problem1_take2/S1u.txt')
 t1u = d[:,0]
 s1u = d[:,1]
 
-d = loadtxt('s1v.txt')
+d = loadtxt('../problem1_take2/S1v.txt')
 t1v = d[:,0]
 s1v = d[:,1]
 
 g = plotdata.getgauge(1)
+print(g)
 u = g.q[1,:] / g.q[0,:]
 v = g.q[2,:] / g.q[0,:]
 
@@ -50,11 +50,11 @@ ylabel('v (m/s)')
 
 # ---  Gauge 2 ---
 
-d = loadtxt('s2u.txt')
+d = loadtxt('../problem1_take2/S2u.txt')
 t2u = d[:,0]
 s2u = d[:,1]
 
-d = loadtxt('s2v.txt')
+d = loadtxt('../problem1_take2/S2v.txt')
 t2v = d[:,0]
 s2v = d[:,1]
 

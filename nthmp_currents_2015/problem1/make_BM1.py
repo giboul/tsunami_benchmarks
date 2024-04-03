@@ -85,4 +85,4 @@ show()
 gdata = vstack([t1, u1, v1, u2, v2]).T
 savetxt(fname,  gdata, fmt='%.12e')
 
-print "Created ",fname
+print(f"Created {fname}")

@@ -6,41 +6,32 @@ that will be read in by the Fortran code.
 
 """
 
-import os
 import numpy as np
+from clawpack.clawutil.data import ClawRunData
 
 
-#------------------------------
-def setrun(claw_pkg='geoclaw'):
-#------------------------------
-
+def setrun(claw_pkg='geoclaw') -> ClawRunData:
     """
     Define the parameters used for running Clawpack.
 
-    INPUT:
-        claw_pkg expected to be "geoclaw" for this setrun.
+    Parameters
+    ----------
+        claw_pkg: str
+            Expected to be "geoclaw" for this setrun.
 
-    OUTPUT:
-        rundata - object of class ClawRunData
-
+    Return
+    ------
+        ClawRunData
     """
 
-    from clawpack.clawutil import data
-
-    assert claw_pkg.lower() == 'geoclaw',  "Expected claw_pkg = 'geoclaw'"
-
     num_dim = 2
-    rundata = data.ClawRunData(claw_pkg, num_dim)
+    rundata = ClawRunData('geoclaw', num_dim)
 
-    #------------------------------------------------------------------
     # GeoClaw specific parameters:
-    #------------------------------------------------------------------
     rundata = setgeo(rundata)
 
-    #------------------------------------------------------------------
     # Standard Clawpack parameters to be written to claw.data:
-    #   (or to amr2ez.data for AMR)
-    #------------------------------------------------------------------
+    # (or to amr2ez.data for AMR)
     clawdata = rundata.clawdata  # initialized when rundata instantiated
 
 
@@ -126,7 +117,7 @@ def setrun(claw_pkg='geoclaw'):
         clawdata.output_step_interval = 20
         clawdata.total_steps = 40
         clawdata.output_t0 = True
-        
+
 
     clawdata.output_format = 'binary'      # 'ascii' or 'binary' 
 
@@ -153,7 +144,7 @@ def setrun(claw_pkg='geoclaw'):
 
     # if dt_variable==1: variable time steps used based on cfl_desired,
     # if dt_variable==0: fixed time steps dt = dt_initial will always be used.
-    clawdata.dt_variable = True
+    clawdata.dt_variable = True  # Does not run if False
 
     # Initial time step for variable dt.
     # If dt_variable==0 then dt=dt_initial for all steps:
@@ -224,7 +215,7 @@ def setrun(claw_pkg='geoclaw'):
     #   2 => periodic (must specify this at both boundaries)
     #   3 => solid wall for systems where q(2) is normal velocity
 
-    clawdata.bc_lower[0] = 'user'
+    clawdata.bc_lower[0] = 'wall'  # 'user'  # TODO
     clawdata.bc_upper[0] = 'extrap'
 
     clawdata.bc_lower[1] = 'wall'
@@ -234,16 +225,9 @@ def setrun(claw_pkg='geoclaw'):
     # used to restart a computation.
 
     clawdata.checkpt_style = 1
-
-    if clawdata.checkpt_style == 0:
-        # Do not checkpoint at all
-        pass
-
-    elif clawdata.checkpt_style == 1:
-        # Checkpoint only at tfinal.
-        pass
-
-    elif clawdata.checkpt_style == 2:
+    # 1: Do not checkpoint at all
+    # 2: Checkpoint only at tfinal.
+    if clawdata.checkpt_style == 2:
         # Specify a list of checkpoint times.  
         clawdata.checkpt_times = [0.1,0.15]
 
@@ -338,13 +322,10 @@ def setgeo(rundata):
     For documentation see ....
     """
 
-    try:
-        geo_data = rundata.geo_data
-    except:
-        print "*** Error, this rundata has no geo_data attribute"
-        raise AttributeError("Missing geo_data attribute")
+    if not hasattr(rundata, 'geo_data'):
+        raise AttributeError("*** Error, this rundata has no geo_data attribute")
+    geo_data = rundata.geo_data
 
-       
     # == Physics ==
     geo_data.gravity = 9.81
     geo_data.coordinate_system = 1
@@ -363,8 +344,8 @@ def setgeo(rundata):
     # Refinement data
     refinement_data = rundata.refinement_data
     refinement_data.wave_tolerance = 1.e-2
-    refinement_data.deep_depth = 1e2
-    refinement_data.max_level_deep = 3
+    # refinement_data.deep_depth = 1e2  # *** WARNING: deep_depth parameter ignored as of v5.8.0
+    # refinement_data.max_level_deep = 3  # *** WARNING: max_level_deep parameter ignored as of v5.8.0
     refinement_data.variable_dt_refinement_ratios = True
 
     # == settopo.data values ==
@@ -374,7 +355,7 @@ def setgeo(rundata):
     topo_data.topofiles.append([1, 1, 1, 0., 1.e10, 'domain.tt1'])
     topo_data.topofiles.append([1, 1, 1, 0., 1.e10, 'hump.tt1'])
 
-    # == setdtopo.data values ==
+    # == setdtopo.data values ==  # TODO check if it does something
     dtopo_data = rundata.dtopo_data
     # for moving topography, append lines of the form :   (<= 1 allowed for now!)
     #   [topotype, minlevel,maxlevel,fname]

@@ -1,0 +1,17 @@
+*.data
+*.amr
+*fort.*
+.output
+.plots
+*.html
+*.mod
+*.log
+*.o
+xgeoclaw
+README.rst
+*.png
+*.tex
+*.tt1
+*.txt
+__pycache__
+*.csv

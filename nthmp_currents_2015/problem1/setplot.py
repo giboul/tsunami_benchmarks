@@ -1,30 +1,24 @@
-
 """ 
 Set up the plot figures, axes, and items to be done for each frame.
 
 This module is imported by the plotting routines and then the
 function setplot is called to set the plot parameters.
-    
 """ 
+from clawpack.visclaw import colormaps, geoplot, gaugetools
+from pylab import nonzero, ravel, where, sqrt, plot, quiver, contour
+# raise ImportError("Uncomment this error so that `clawpack.visclaw.setplot_default()` is suggested.")
 
-import numpy
-from clawpack.visclaw import colormaps
+
+def find(condition):
+    return nonzero(ravel(condition))
 
 
-
-#--------------------------
 def setplot(plotdata):
-#--------------------------
-    
     """ 
     Specify what is to be plotted at each frame.
     Input:  plotdata, an instance of pyclaw.plotters.data.ClawPlotData.
-    Output: a modified version of plotdata.
-    
+    Output: a modified version of plotdata.    
     """ 
-
-
-    from clawpack.visclaw import colormaps, geoplot
 
     plotdata.clearfigures()  # clear any old figures,axes,items data
     plotdata.format = 'binary'
@@ -43,9 +37,11 @@ def setplot(plotdata):
     # an afteraxis function:
 
     def addgauges(current_data):
-        from clawpack.visclaw import gaugetools
-        gaugetools.plot_gauge_locations(current_data.plotdata, \
-             gaugenos='all', format_string='ko', add_labels=True, fontsize=8)
+        gaugetools.plot_gauge_locations(current_data.plotdata,
+                                        gaugenos='all',
+                                        format_string='ko',
+                                        add_labels=True,
+                                        fontsize=8)
     
     #-----------------------------------------
     # Figure for imshow plot
@@ -61,8 +57,11 @@ def setplot(plotdata):
     plotaxes.scaled = True
     plotaxes.xlimits = [0,9.5]
 
-    cmap = colormaps.make_colormap({0:[0.5,1,0.5],0.01:[0,1,1], \
-                                    0.2:[0,0,1], 0.5:[1,1,0],  0.8:[1,0,0], \
+    cmap = colormaps.make_colormap({0:[0.5,1,0.5],
+                                    0.01:[0,1,1],
+                                    0.2:[0,0,1],
+                                    0.5:[1,1,0],
+                                    0.8:[1,0,0],
                                     1.:[0.2,0,0]})
 
     # Water
@@ -80,7 +79,6 @@ def setplot(plotdata):
     # Add contour lines of bathymetry:
     plotitem = plotaxes.new_plotitem(plot_type='2d_contour')
     plotitem.plot_var = geoplot.topo
-    from numpy import arange, linspace
     plotitem.contour_levels = [-0.05, -0.01]
     plotitem.amr_contour_colors = ['k']  # color on each level
     plotitem.kwargs = {'linestyles':'solid'}
@@ -107,7 +105,6 @@ def setplot(plotdata):
 
     def xsec(current_data):
         # Return x value and surface eta at this point, along y=0.76
-        from pylab import find,ravel
         x = current_data.x
         y = current_data.y
         dy = current_data.dy
@@ -129,7 +126,6 @@ def setplot(plotdata):
 
     def xsec_B(current_data):
         # Return x value and B at this point, along y=0
-        from pylab import find,ravel,where,sqrt
         x = current_data.x
         y = current_data.y
         dy = current_data.dy
@@ -158,7 +154,6 @@ def setplot(plotdata):
 
     def xsec_s(current_data):
         # Return x value and speed at this point, along y=0
-        from pylab import find,ravel,where,sqrt
         x = current_data.x
         y = current_data.y
         dy = current_data.dy
@@ -192,7 +187,6 @@ def setplot(plotdata):
 
     def xsec_hu(current_data):
         # Return x value and discharge at this point, along y=0
-        from pylab import find,ravel,where,sqrt
         x = current_data.x
         y = current_data.y
         dy = current_data.dy
@@ -222,7 +216,6 @@ def setplot(plotdata):
     plotfigure.kwargs = {'figsize':(14,8)}
 
     def speed(current_data):
-        from pylab import where,sqrt
         q = current_data.q
         h = q[0,:]
         dry_tol = 0.001
@@ -232,7 +225,6 @@ def setplot(plotdata):
         return s
 
     def plot_quiver(current_data):
-        from pylab import where,sqrt,quiver,contour
         if current_data.level < 2:
             return
         q = current_data.q
@@ -246,9 +238,9 @@ def setplot(plotdata):
         quiver(x[::c,::c],y[::c,::c],u[::c,::c],v[::c,::c],scale=10)
         B = q[3,:,:] - h
         contour(x,y,B,[-0.05,-0.01],colors='b',linestyles='solid',linewidths=2)
-        #print "+++ B: ",B.min(), B.max()
+        #print(f"+++ B: {B.min()}, {B.max()}")
         if h.min() < 0.003:
-            print "+++ h.min: ",h.min()
+            print(f"+++ h.min: {h.min()}")
 
 
 
@@ -307,7 +299,6 @@ def setplot(plotdata):
     # Add contour lines of bathymetry:
     plotitem = plotaxes.new_plotitem(plot_type='2d_contour')
     plotitem.plot_var = geoplot.topo
-    from numpy import arange, linspace
     plotitem.contour_levels = [-0.05, -0.01]
     plotitem.amr_contour_colors = ['k']  # color on each level
     plotitem.kwargs = {'linestyles':'solid'}
@@ -378,7 +369,6 @@ def setplot(plotdata):
     # Add contour lines of bathymetry:
     plotitem = plotaxes.new_plotitem(plot_type='2d_contour')
     plotitem.plot_var = geoplot.topo
-    from numpy import arange, linspace
     plotitem.contour_levels = [0.08]
     plotitem.amr_contour_colors = ['k']  # color on each level
     plotitem.kwargs = {'linestyles':'solid'}
@@ -394,12 +384,10 @@ def setplot(plotdata):
     #-----------------------------------------
 
     def add_zeroline(current_data):
-        from pylab import plot, legend
         t = current_data.t
         plot(t, 0*t, 'k')
 
-    plotfigure = plotdata.new_plotfigure(name='Surface & topo', figno=300, \
-                    type='each_gauge')
+    plotfigure = plotdata.new_plotfigure(name='Surface & topo', figno=300, type='each_gauge')
 
     plotfigure.kwargs = {'figsize':(14,9)}
     plotfigure.clf_each_gauge = True
@@ -425,7 +413,6 @@ def setplot(plotdata):
 
     plotitem = plotaxes.new_plotitem(plot_type='1d_plot')
     def u(current_data):
-        from pylab import where,sqrt
         q = current_data.q
         h = q[0,:]
         dry_tol = 0.001
@@ -445,7 +432,6 @@ def setplot(plotdata):
 
     plotitem = plotaxes.new_plotitem(plot_type='1d_plot')
     def v(current_data):
-        from pylab import where,sqrt
         q = current_data.q
         h = q[0,:]
         dry_tol = 0.001
